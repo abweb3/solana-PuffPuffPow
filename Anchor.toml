@@ -1,0 +1,17 @@
+[programs.devnet]
+solana_itus = "FWnGsp5dSMW91H8ap8zc4BPjqfTN4yMg9PYxedw3mZGy"  
+
+[registry]
+url = "https://anchor.projectserum.com"
+
+[provider]
+cluster = "https://api.devnet.solana.com"
+wallet = "~/.config/solana/id.json"
+
+[scripts]
+test = "anchor test --provider.cluster devnet"
+
+[workspace]
+members = [
+    "programs/solana_itus",
+]

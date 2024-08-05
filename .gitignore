@@ -1,0 +1,9 @@
+node_modules/
+target/
+anchor/target/
+dist/
+*.log
+.DS_Store
+.idea/
+*.json
+*.lock
