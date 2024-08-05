@@ -5,6 +5,7 @@ use solana_program::account_info::AccountInfo;
 use solana_program::pubkey::Pubkey;
 use solana_program::sysvar::clock::Clock;
 use std::convert::TryInto;
+use std::ptr::addr_of_mut;
 use std::str::FromStr;
 
 const RAYDIUM_LP_ADDRESS: &str = "CPMMoo8L3F4NbTegBCKVNunggL7H1ZpdTHKxQB5qKP1C"; // Replace with actual Raydium LP address
@@ -44,8 +45,8 @@ fn get_lp_account(lp_address: &str) -> anchor_lang::Result<AccountInfo<'static>>
             LEAKED_LP_PUBKEY.as_ref().unwrap(),
             false,
             false,
-            &mut LAMPORTS,
-            &mut DATA,
+            addr_of_mut!(LAMPORTS),
+            addr_of_mut!(DATA),
             &Pubkey::default(),
             false,
             Epoch::default(),
@@ -57,7 +58,7 @@ fn get_lp_account(lp_address: &str) -> anchor_lang::Result<AccountInfo<'static>>
 
 // Function to get the reserves of bottom and top tokens from the LP account
 fn get_reserves_from_lp(lp_account: AccountInfo<'_>) -> anchor_lang::Result<(u64, u64)> {
-    let lp_data = lp_account.try_borrow_data()?;
+    let lp_data: std::cell::Ref<&mut [u8]> = lp_account.try_borrow_data()?;
     let (reserve_bottom, reserve_top) = (
         u64::from_le_bytes(
             lp_data[0..8]
@@ -87,8 +88,8 @@ fn get_token_supply(token_pubkey: Pubkey) -> anchor_lang::Result<u64> {
             LEAKED_TOKEN_PUBKEY.as_ref().unwrap(),
             false,
             false,
-            &mut LAMPORTS,
-            &mut DATA,
+            addr_of_mut!(LAMPORTS),
+            addr_of_mut!(DATA),
             &binding,
             false,
             Epoch::default(),
