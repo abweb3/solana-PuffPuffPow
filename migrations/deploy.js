@@ -8,7 +8,7 @@ module.exports = async function (provider) {
     require('fs').readFileSync('./target/idl/solana_itus.json', 'utf8')
   );
 
-  const programId = new anchor.web3.PublicKey('FWnGsp5dSMW91H8ap8zc4BPjqfTN4yMg9PYxedw3mZGy'); // Replace with your actual program ID
+  const programId = new anchor.web3.PublicKey('FWnGsp5dSMW91H8ap8zc4BPjqfTN4yMg9PYxedw3mZGy');
 
   const program = new anchor.Program(idl, programId, provider);
 
