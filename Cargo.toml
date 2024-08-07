@@ -2,3 +2,6 @@
 members = [
     "programs/solana_itus",
 ]
+
+[profile.release]
+overflow-checks = true
