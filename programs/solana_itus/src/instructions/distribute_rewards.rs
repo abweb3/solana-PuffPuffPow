@@ -1,6 +1,6 @@
-use crate::error::MyError;
 use crate::state::State;
 use crate::utils::calculate_epoch_id;
+use crate::error::MyError;  
 use anchor_lang::prelude::*;
 use anchor_spl::token::{self, TokenAccount, Transfer};
 
@@ -17,7 +17,6 @@ pub struct DistributeRewards<'info> {
 }
 
 pub fn handler(ctx: Context<DistributeRewards>) -> Result<()> {
-    // Borrow mutable reference to `state`
     let state = &mut ctx.accounts.state;
     let current_epoch_id = calculate_epoch_id(state.last_epoch_timestamp, state.epoch_duration);
 

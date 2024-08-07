@@ -19,7 +19,6 @@ pub struct SettleEpoch<'info> {
 }
 
 pub fn handler(ctx: Context<SettleEpoch>) -> Result<()> {
-    // Borrow mutable reference to `state`
     let state = &mut ctx.accounts.state;
     let current_epoch_id = calculate_epoch_id(state.last_epoch_timestamp, state.epoch_duration);
 

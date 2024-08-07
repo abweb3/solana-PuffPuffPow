@@ -1,7 +1,7 @@
 use crate::state::{State, UserRewards};
+use crate::error::MyError;
 use anchor_lang::prelude::*;
 use anchor_spl::token::{self, TokenAccount, Transfer};
-use crate::error::MyError;
 
 #[derive(Accounts)]
 pub struct ClaimRewards<'info> {
@@ -19,7 +19,6 @@ pub struct ClaimRewards<'info> {
 }
 
 pub fn handler(ctx: Context<ClaimRewards>, epoch_id: u64) -> Result<()> {
-    // Borrow mutable references to `state` and `user_rewards`
     let state = &mut ctx.accounts.state;
     let user_rewards = &mut ctx.accounts.user_rewards;
 
