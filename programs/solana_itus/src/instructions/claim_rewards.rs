@@ -22,28 +22,21 @@ pub fn handler(ctx: Context<ClaimRewards>, epoch_id: u64) -> Result<()> {
     let state = &mut ctx.accounts.state;
     let user_rewards = &mut ctx.accounts.user_rewards;
 
-    // Ensure the epoch ID is valid
     require!(epoch_id < state.epoch_id, MyError::InvalidEpochId);
-
-    // Calculate the reward for the user
     let reward_amount = user_rewards.claimable(epoch_id);
-
-    // Ensure there are rewards to claim
     require!(reward_amount > 0, MyError::NoRewardsToClaim);
 
-    // Drop the mutable references before creating the CPI context
-    drop(state);
-    drop(user_rewards);
+    let _ = state;  // Explicitly ignore state
+    let _ = user_rewards;  // Explicitly ignore user_rewards
 
-    // Transfer the reward to the user's reward destination
     token::transfer(ctx.accounts.into_transfer_context(), reward_amount)?;
 
-    // Re-borrow mutable references to update user's rewards
     let user_rewards = &mut ctx.accounts.user_rewards;
     user_rewards.rewards_claimed(epoch_id, reward_amount)?;
 
     Ok(())
 }
+
 
 impl<'info> ClaimRewards<'info> {
     fn into_transfer_context(&self) -> CpiContext<'_, '_, '_, 'info, Transfer<'info>> {

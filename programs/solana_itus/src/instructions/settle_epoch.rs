@@ -22,21 +22,18 @@ pub fn handler(ctx: Context<SettleEpoch>) -> Result<()> {
     let state = &mut ctx.accounts.state;
     let current_epoch_id = calculate_epoch_id(state.last_epoch_timestamp, state.epoch_duration);
 
-    // Settle the epoch by calculating the market cap and rewards
     state.settle_epoch(current_epoch_id)?;
 
-    // Drop the mutable reference before creating the CPI context
-    drop(state);
+    let _ = state;
 
-    // Transfer the rewards to the reward destination account
     token::transfer(ctx.accounts.into_transfer_context(), ctx.accounts.rewards_account.amount)?;
 
-    // Re-borrow mutable reference to update the state with the settled epoch data
     let state = &mut ctx.accounts.state;
-    state.update_epoch_duration()?; // Adjusted to use an existing function
+    state.update_epoch_duration()?;
 
     Ok(())
 }
+
 
 impl<'info> SettleEpoch<'info> {
     fn into_transfer_context(&self) -> CpiContext<'_, '_, '_, 'info, Transfer<'info>> {

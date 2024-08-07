@@ -11,7 +11,7 @@ pub mod utils;
 
 declare_id!("FWnGsp5dSMW91H8ap8zc4BPjqfTN4yMg9PYxedw3mZGy");
 
-#[program]
+// #[program]
 pub mod solana_itus {
     use super::*;
 

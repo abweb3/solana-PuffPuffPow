@@ -19,25 +19,20 @@ pub struct DistributeRewards<'info> {
 pub fn handler(ctx: Context<DistributeRewards>) -> Result<()> {
     let state = &mut ctx.accounts.state;
     let current_epoch_id = calculate_epoch_id(state.last_epoch_timestamp, state.epoch_duration);
-
-    // Calculate the total reward amount for the current epoch
     let total_reward = state.calculate_total_reward(current_epoch_id)?;
 
-    // Ensure there are rewards to distribute
     require!(total_reward > 0, MyError::NoRewardsToDistribute);
 
-    // Drop the mutable reference before creating the CPI context
-    drop(state);
+    let _ = state;
 
-    // Transfer the rewards to the reward destination account
     token::transfer(ctx.accounts.into_transfer_context(), total_reward)?;
 
-    // Re-borrow mutable reference to update the state with the distributed rewards
     let state = &mut ctx.accounts.state;
     state.rewards_distributed(current_epoch_id, total_reward)?;
 
     Ok(())
 }
+
 
 impl<'info> DistributeRewards<'info> {
     fn into_transfer_context(&self) -> CpiContext<'_, '_, '_, 'info, Transfer<'info>> {
