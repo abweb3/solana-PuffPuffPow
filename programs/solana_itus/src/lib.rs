@@ -9,7 +9,7 @@ pub mod instructions;
 pub mod state;
 pub mod utils;
 
-declare_id!("HXAiXnrC5sz49d67cTVtbmyU6cNoEYbjQT2J6S8x4TcN");
+declare_id!("7Bk5wkiL1RwqLBMzfKPPC8MVaTDbTqxFTPi49GPp4fmX");
 
 // #[program]
 pub mod solana_itus {
