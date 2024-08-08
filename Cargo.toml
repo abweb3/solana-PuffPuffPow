@@ -1,7 +1,7 @@
 [workspace]
-members = [
-    "programs/solana-itus",
-]
+members = ["programs/solana-itus"]
 
 [profile.release]
+codegen-units = 1
+lto = true
 overflow-checks = true

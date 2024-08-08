@@ -19,24 +19,25 @@ pub struct ClaimRewards<'info> {
 }
 
 pub fn handler(ctx: Context<ClaimRewards>, epoch_id: u64) -> Result<()> {
-    let state = &mut ctx.accounts.state;
-    let user_rewards = &mut ctx.accounts.user_rewards;
+    let reward_amount;
+    {
+        let state = &mut ctx.accounts.state;
+        let user_rewards = &mut ctx.accounts.user_rewards;
 
-    require!(epoch_id < state.epoch_id, MyError::InvalidEpochId);
-    let reward_amount = user_rewards.claimable(epoch_id);
-    require!(reward_amount > 0, MyError::NoRewardsToClaim);
-
-    let _ = state;  // Explicitly ignore state
-    let _ = user_rewards;  // Explicitly ignore user_rewards
+        require!(epoch_id < state.epoch_id, MyError::InvalidEpochId);
+        reward_amount = user_rewards.claimable(epoch_id);
+        require!(reward_amount > 0, MyError::NoRewardsToClaim);
+    }
 
     token::transfer(ctx.accounts.into_transfer_context(), reward_amount)?;
 
-    let user_rewards = &mut ctx.accounts.user_rewards;
-    user_rewards.rewards_claimed(epoch_id, reward_amount)?;
+    {
+        let user_rewards = &mut ctx.accounts.user_rewards;
+        user_rewards.rewards_claimed(epoch_id, reward_amount)?;
+    }
 
     Ok(())
 }
-
 
 impl<'info> ClaimRewards<'info> {
     fn into_transfer_context(&self) -> CpiContext<'_, '_, '_, 'info, Transfer<'info>> {
@@ -45,7 +46,7 @@ impl<'info> ClaimRewards<'info> {
             Transfer {
                 from: self.rewards_account.to_account_info(),
                 to: self.reward_destination.to_account_info(),
-                authority: self.user.to_account_info(), // Fixed the authority field
+                authority: self.user.to_account_info(),
             },
         )
     }

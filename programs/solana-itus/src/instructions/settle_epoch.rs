@@ -19,21 +19,23 @@ pub struct SettleEpoch<'info> {
 }
 
 pub fn handler(ctx: Context<SettleEpoch>) -> Result<()> {
-    let state = &mut ctx.accounts.state;
-    let current_epoch_id = calculate_epoch_id(state.last_epoch_timestamp, state.epoch_duration);
+    let rewards_amount;
+    {
+        let state = &mut ctx.accounts.state;
+        let current_epoch_id = calculate_epoch_id(state.last_epoch_timestamp, state.epoch_duration);
+        state.settle_epoch(current_epoch_id)?;
+        rewards_amount = ctx.accounts.rewards_account.amount;
+    }
 
-    state.settle_epoch(current_epoch_id)?;
+    token::transfer(ctx.accounts.into_transfer_context(), rewards_amount)?;
 
-    let _ = state;
-
-    token::transfer(ctx.accounts.into_transfer_context(), ctx.accounts.rewards_account.amount)?;
-
-    let state = &mut ctx.accounts.state;
-    state.update_epoch_duration()?;
+    {
+        let state = &mut ctx.accounts.state;
+        state.update_epoch_duration()?;
+    }
 
     Ok(())
 }
-
 
 impl<'info> SettleEpoch<'info> {
     fn into_transfer_context(&self) -> CpiContext<'_, '_, '_, 'info, Transfer<'info>> {

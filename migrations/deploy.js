@@ -10,7 +10,7 @@ module.exports = async function (provider) {
   );
 
   const programId = new anchor.web3.PublicKey(
-    "Ax2sdt8fBVM55h1GrUoJ2o3pNe8ix24BFnrgY27aCsQw"
+    "G4vZS9rZrDpRWKU5uae9zGT9DHTbP7XbEbvKx2X4awD2"
   );
 
   const program = new anchor.Program(idl, programId, provider);

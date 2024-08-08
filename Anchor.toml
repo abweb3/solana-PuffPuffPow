@@ -5,7 +5,7 @@ resolution = true
 skip-lint = false
 
 [programs.devnet]
-solana_itus = "5KMXpWfqWVczXD3qDYU6bhVvGVGNAP3tS7WgdbqFXMCZ"
+solana_itus = "G4vZS9rZrDpRWKU5uae9zGT9DHTbP7XbEbvKx2X4awD2"
 
 [registry]
 url = "https://anchor.projectserum.com"
