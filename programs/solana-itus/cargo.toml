@@ -1,11 +1,11 @@
 [package]
-name = "solana_itus"
+name = "solana-itus"
 version = "0.1.0"
 edition = "2018"
 
 [dependencies]
-anchor-lang = "0.30.1"
-anchor-spl = "0.30.1"
+anchor-lang = { version = "0.30.1", features = ["idl-build"] }
+anchor-spl = { version = "0.30.1", features = ["idl-build"] }
 solana-program = "2.0.4"
 num_enum = "0.7"
 num_enum_derive = "0.7"

@@ -1,6 +1,6 @@
 [workspace]
 members = [
-    "programs/solana_itus",
+    "programs/solana-itus",
 ]
 
 [profile.release]

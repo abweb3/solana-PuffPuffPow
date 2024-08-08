@@ -5,7 +5,7 @@ resolution = true
 skip-lint = false
 
 [programs.devnet]
-solana_itus = "Ax2sdt8fBVM55h1GrUoJ2o3pNe8ix24BFnrgY27aCsQw"
+solana_itus = "5KMXpWfqWVczXD3qDYU6bhVvGVGNAP3tS7WgdbqFXMCZ"
 
 [registry]
 url = "https://anchor.projectserum.com"
@@ -15,7 +15,7 @@ cluster = "https://api.devnet.solana.com"
 wallet = "~/.config/solana/id.json"
 
 [workspace]
-members = ["programs/solana_itus"]
+members = ["programs/solana-itus"]
 
 [scripts]
 test = "anchor test --provider.cluster devnet"

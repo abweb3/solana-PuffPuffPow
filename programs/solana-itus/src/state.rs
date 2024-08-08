@@ -1,5 +1,4 @@
 use anchor_lang::prelude::*;
-use std::collections::HashMap;
 
 #[account]
 pub struct State {
@@ -10,12 +9,25 @@ pub struct State {
     pub bottom_token: Pubkey,
     pub top_token: Pubkey,
     pub last_epoch_winner: Winner,
-    pub epoch_rewards: HashMap<u64, u64>,
-    pub has_claimed_reward: HashMap<(u64, Pubkey), bool>,
+    pub epoch_rewards: Vec<EpochReward>, // Changed from HashMap to Vec
+    pub has_claimed_reward: Vec<ClaimedReward>, // Changed from HashMap to Vec
     pub rewards_account: Pubkey,
     pub epoch_id: u64,
     pub daily_votes: u64,
     pub weekly_votes: u64,
+}
+
+#[derive(AnchorSerialize, AnchorDeserialize, Clone, PartialEq, Eq)]
+pub struct EpochReward {
+    pub epoch_id: u64,
+    pub reward: u64,
+}
+
+#[derive(AnchorSerialize, AnchorDeserialize, Clone, PartialEq, Eq)]
+pub struct ClaimedReward {
+    pub epoch_id: u64,
+    pub user: Pubkey,
+    pub claimed: bool,
 }
 
 impl State {
@@ -28,7 +40,10 @@ impl State {
     }
 
     pub fn rewards_distributed(&mut self, epoch_id: u64, total_reward: u64) -> Result<()> {
-        self.epoch_rewards.insert(epoch_id, total_reward);
+        self.epoch_rewards.push(EpochReward {
+            epoch_id,
+            reward: total_reward,
+        });
         Ok(())
     }
 
@@ -67,18 +82,26 @@ impl State {
 #[account]
 pub struct UserRewards {
     pub user: Pubkey,
-    pub rewards: HashMap<u64, u64>, // Epoch ID to reward amount
+    pub rewards: Vec<EpochReward>, // Changed from HashMap to Vec
 }
 
 impl UserRewards {
     pub fn claimable(&self, epoch_id: u64) -> u64 {
-        *self.rewards.get(&epoch_id).unwrap_or(&0)
+        self.rewards
+            .iter()
+            .find(|reward| reward.epoch_id == epoch_id)
+            .map(|reward| reward.reward)
+            .unwrap_or(0)
     }
 
     pub fn rewards_claimed(&mut self, epoch_id: u64, amount: u64) -> Result<()> {
-        if let Some(reward) = self.rewards.get_mut(&epoch_id) {
-            if *reward >= amount {
-                *reward -= amount;
+        if let Some(reward) = self
+            .rewards
+            .iter_mut()
+            .find(|reward| reward.epoch_id == epoch_id)
+        {
+            if reward.reward >= amount {
+                reward.reward -= amount;
                 Ok(())
             } else {
                 Err(ProgramError::InsufficientFunds.into())
