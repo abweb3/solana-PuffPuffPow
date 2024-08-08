@@ -1,12 +1,11 @@
 [toolchain]
-channel = "stable"
 
 [features]
 resolution = true
 skip-lint = false
 
 [programs.devnet]
-solana_itus = "FWnGsp5dSMW91H8ap8zc4BPjqfTN4yMg9PYxedw3mZGy"
+solana_itus = "Ax2sdt8fBVM55h1GrUoJ2o3pNe8ix24BFnrgY27aCsQw"
 
 [registry]
 url = "https://anchor.projectserum.com"

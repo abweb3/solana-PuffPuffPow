@@ -10,7 +10,15 @@ solana-program = "2.0.4"
 num_enum = "0.7"
 num_enum_derive = "0.7"
 
-
-
 [lib]
 crate-type = ["cdylib", "lib"]
+
+[features]
+idl-build = [
+    "anchor-lang/idl-build",
+    "anchor-spl/idl-build",
+]
+
+[profile.release]
+codegen-units = 1
+lto = true
