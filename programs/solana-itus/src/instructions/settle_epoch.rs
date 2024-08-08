@@ -1,7 +1,7 @@
 use crate::state::State;
 use crate::utils::calculate_epoch_id;
 use anchor_lang::prelude::*;
-use anchor_spl::token::{self, TokenAccount, Transfer};
+use anchor_spl::token::{self, TokenAccount, Transfer, Token};
 
 #[derive(Accounts)]
 pub struct SettleEpoch<'info> {

@@ -1,5 +1,5 @@
 use anchor_lang::prelude::*;
-use anchor_spl::token::{self, Mint, TokenAccount, Transfer};
+use anchor_spl::token::{self, Mint, TokenAccount, Transfer, Token};
 
 #[derive(Accounts)]
 pub struct InitializePools<'info> {
