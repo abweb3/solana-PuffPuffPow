@@ -1,7 +1,7 @@
 use crate::state::{State, UserRewards};
 use crate::error::MyError;
 use anchor_lang::prelude::*;
-use anchor_spl::token::{self, TokenAccount, Transfer, Token};
+use anchor_spl::token::{self, TokenAccount, Transfer};
 
 #[derive(Accounts)]
 pub struct ClaimRewards<'info> {

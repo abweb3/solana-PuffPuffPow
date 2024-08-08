@@ -2,7 +2,7 @@ use crate::state::State;
 use crate::utils::calculate_epoch_id;
 use crate::error::MyError;
 use anchor_lang::prelude::*;
-use anchor_spl::token::{self, TokenAccount, Transfer, Token};
+use anchor_spl::token::{self, TokenAccount, Transfer};
 
 #[derive(Accounts)]
 pub struct DistributeRewards<'info> {

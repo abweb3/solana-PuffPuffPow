@@ -1,5 +1,5 @@
 use anchor_lang::prelude::*;
-use anchor_spl::token::{self, Mint, TokenAccount, Transfer, Token};
+use anchor_spl::token::{self, Mint, TokenAccount, Transfer};
 
 #[derive(Accounts)]
 pub struct PublicSale<'info> {
