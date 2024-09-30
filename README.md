@@ -1,4 +1,4 @@
-# Solana Itus
+# Puff Puff Pow
 
 Solana Itus is a decentralized application built on the Solana blockchain. This project includes various functionalities such as token initialization, public sales, epoch settlement, reward distribution, and reward claiming.
 
